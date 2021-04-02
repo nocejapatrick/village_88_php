@@ -1,0 +1,11 @@
+Error: Warning: mysqli::__construct(): (HY000/1049): Unknown database
+Fix: Check database name
+
+Error: Warning: mysqli::__construct(): (HY000/1045): Access denied for user
+Fix: Check for user default always 'root'
+
+Error: Warning: mysqli::__construct(): php_network_getaddresses: getaddrinfo failed: No such host is known.
+Fix: Check the host ip address by default always 'localhost'
+
+Error: Warning: mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean
+Fix: Check if query has an error. E.g table name
