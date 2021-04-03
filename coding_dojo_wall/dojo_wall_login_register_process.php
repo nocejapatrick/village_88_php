@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once('new_connection.php');
+require_once('new_connection.php');
 
 function errorMessage($string,$message){
     $_SESSION["error"][$string] = $message;
