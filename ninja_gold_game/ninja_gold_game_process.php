@@ -1,20 +1,12 @@
 <?php
 session_start();
 
-$coins = 0;
-$place = "";
-$action = "";
 
-if(isset($_POST["user_actions"]) && $_POST["user_actions"]== "farm"){
-    $coins = rand(10,20);
-    $action = "earned";
-}else if(isset($_POST["user_actions"]) && $_POST["user_actions"]== "cave"){
-    $coins = rand(5,10);
-    $action = "earned";
-}else if(isset($_POST["user_actions"]) && $_POST["user_actions"]== "house"){
-    $coins = rand(2,5);
-    $action = "earned";
-}else if(isset($_POST["user_actions"]) && $_POST["user_actions"]== "casino"){
+$action = "earned";
+$place_arr = array("farm"=>[10,20],"cave"=>[5,10],"house"=>[2,5],"casino"=>[0,50]);
+$coins = rand($place_arr[$_POST["user_actions"]][0], $place_arr[$_POST["user_actions"]][1]);
+
+if(isset($_POST["user_actions"]) && $_POST["user_actions"]== "casino"){
     $casinoAction = ["earned","lost"];
     $action = $casinoAction[rand(0,1)];
     $coins = rand(0,50);
