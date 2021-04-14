@@ -23,16 +23,14 @@ if(isset($_POST["submit"])){
     if($_POST["action"] == "hit"){
         $dealer->deal($player);
 
-        while(!$dealer->checkWinner($player)){
-            $dealer->deal($dealer);
+        if($dealer->checkIfBust($player)){
+            $_SESSION["game"]["text"] = "Player Lose";
         }
 
         header("location: card_game.php");
     }
 
     if($_POST["action"] == "stay"){
-
-        $dealer->deal($dealer);
 
         
         while(!$dealer->checkWinner($player)){

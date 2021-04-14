@@ -1,5 +1,10 @@
 <?php 
 session_start();
+if(isset($_SESSION['csv'])){
+   $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
+   $countToMax = (50*$page);
+   $countToMin = (50*$page)-50;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -82,6 +87,14 @@ session_start();
             <input type='submit' name='submit' value='Upload Products'>
             
         </form>
+        <?php if(isset($_SESSION['csv'])){?>
+        <div>
+            <?php if($page != 1){?>
+            <a href="/village88/csv_web_app/csv_web_app.php?page=<?= $page-1 ?>">Prev</a>
+            <?php } ?>
+            <a href="/village88/csv_web_app/csv_web_app.php?page=<?= $page+1 ?>">Next</a>
+        </div>
+        <?php } ?>
         <table>
             <thead>
                 <tr>
@@ -98,7 +111,7 @@ session_start();
             if(isset($_SESSION["csv"])){
 
                 $datas = $_SESSION["csv"];
-                 for($i = 0; $i < count($datas); $i++){
+                 for($i = $countToMin; $i < $countToMax; $i++){
             ?>
                 <tr class="<?php if(($i+1)%5 == 0){ echo 'fifth';}else{ echo ''; }?>">
                 <?php foreach($datas[$i] as $data){?>

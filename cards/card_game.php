@@ -1,6 +1,7 @@
 <?php
 include('Classes.php');
 session_start();
+// session_destroy();
 ?>
 <HTML>
 <HEAD>
@@ -33,7 +34,7 @@ session_start();
         margin: auto;
         text-align: center;
     }
-    .container h3{
+    .container .mt-60{
         margin-top: 60px;
     }
     form{
@@ -67,14 +68,12 @@ session_start();
         left: 6px;
     }
     .container form input[type="submit"]{
-        width: 120px;
+        width: 136px;
         height: 105px;
         transform: translate(0px,0px);
         transition: .2s all ease-in-out;
     }
     .container form input[type="submit"]:hover{
-        width: 120px;
-        height: 105px;
         transform: translate(0px,-10px);
     }
     .container form{
@@ -95,6 +94,9 @@ session_start();
         color: black;
         margin: 10px 0px;
     }
+    input[type="text"]{
+        color: black;
+    }
 
 </style>
 </HEAD>
@@ -114,10 +116,15 @@ session_start();
             <img src="images/b2fv.png" alt="">
         </div>
         <div class="container">
-            <h3>Dealer</h3>
+            <h3 class="mt-60">Dealer</h3>
+            <h3 style="margin-top:20px;"><?php 
+              $dealer = $_SESSION["game"]["dealer"];
+              echo $dealer->holdingNumber;
+            
+            ?></h3>
             <div class="dealer-cards">
                 <?php 
-                $dealer = $_SESSION["game"]["dealer"];
+              
                 //   var_dump($dealer);
                 foreach($dealer->cards as $card){
                 ?>
@@ -137,7 +144,7 @@ session_start();
                 <div>
                     <form action="game_process.php" method="POST">
                         <input type="hidden" name="action" value="stay">
-                        <input type="submit" name="submit" value="Stay">
+                        <input type="submit" name="submit" value="Stand">
                     </form>
                     <form action="game_process.php" method="POST">
                         <input type="hidden" name="action" value="hit">
@@ -146,7 +153,7 @@ session_start();
                 </div>
             <?php }else{ ?>
                 <div>
-                    <h2>Game Over</h2>
+                    <h2 style="margin-top: 0px;">Game Over</h2>
                     <p><?= (isset($_SESSION["game"]["text"])) ? $_SESSION["game"]["text"] : "" ?></p>
                     <form action="game_process.php" method="POST">
                         <input type="hidden" name="action" value="reset">
@@ -154,7 +161,8 @@ session_start();
                     </form>
                 </div>
                 <?php }?>
-            <h3>Player</h3>
+            <h3 class="mt-60"><?= $player->holdingNumber ?></h3>
+            <h3 style="margin-top:20px;">Player</h3>
             <div class="player-cards">
                 <?php 
                   
@@ -164,7 +172,12 @@ session_start();
                   <img src="<?= $card->image ?>" alt="">
                 <?php } ?>
             </div>
-            <?php if(isset($_SESSION["game"]["activities"])){?>
+            <div class="coins-container">
+                <label for="">Coins: </label>
+                <input type="text" value="<?= $player->coins ?>" disabled="disabled">
+            </div>
+
+            <!-- <?php if(isset($_SESSION["game"]["activities"])){?>
             <div class="activies-container">
                 <ul>
                     <?php
@@ -176,7 +189,7 @@ session_start();
                     <?php }?>
                 </ul>
             </div>
-            <?php } ?>
+            <?php } ?> -->
         </div>
     <?php } ?>
 </body>

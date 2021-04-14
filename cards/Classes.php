@@ -1,5 +1,10 @@
 <?php
 
+class Human{
+    public $cards;
+    public $holdingNumber;
+    public $name;
+}
 
 class Card{
     public $image;
@@ -41,11 +46,9 @@ class Deck{
 
 }
 
-class Dealer{
+class Dealer extends Human{
     public $deck;
-    public $cards;
-    public $holdingNumber;
-    public $name;
+    public $bet;
 
     public function __construct(){
        $this->reset();
@@ -81,31 +84,40 @@ class Dealer{
     }
 
     public function checkWinner($player){
-        if($player->holdingNumber == 21 || $this->holdingNumber > 21){
+        if($this->holdingNumber > 21){
             $_SESSION["game"]["text"] = "Player Wins";
             return true;
         }
-        if($this->holdingNumber == 21 || $player->holdingNumber > 21){
+        if($this->holdingNumber > $player->holdingNumber){
             $_SESSION["game"]["text"] = "Player Lose";
             return true;
         }
-        if(count($this->cards) == 2 && $this->holdingNumber > 15){
+        if($this->holdingNumber == $player->holdingNumber){
+            $_SESSION["game"]["text"] = "Draw";
+            return true;
+        }
+
+        if($this->holdingNumber > 17 && $this->holdingNumber < 21){
             if($this->holdingNumber > $player->holdingNumber){
                 $_SESSION["game"]["text"] = "Player Lose";
-            }else{
+            }else if($this->holdingNumber < $player->holdingNumber){
                 $_SESSION["game"]["text"] = "Player Wins";
+            }else{
+                $_SESSION["game"]["text"] = "Draw";
             }
             return true;
         }
-        if(count($this->cards) >= 3){
-            if($this->holdingNumber > $player->holdingNumber){
-                $_SESSION["game"]["text"] = "Player Lose";
-            }else{
-                $_SESSION["game"]["text"] = "Player Wins";
-            }
-            return true;
-        }
+
         return false;
+    }
+
+    public function checkIfBust($player){
+        if($player->holdingNumber > 21){
+            return true;
+        }
+        if($player->holdingNumber == 21){
+            $_SESSION["game"]["text"] = "Player Wins";
+        }
     }
 }
 
@@ -113,14 +125,13 @@ class Dealer{
 
 
 
-class Player{
-    public $cards;
-    public $holdingNumber;
-    public $name;
+class Player extends Human{
+    public $coins;
 
     public function __construct(){
         $this->reset();
         $this->name = "Player";
+        $this->coins = 1000;
     }
 
     public function SetSession(){
